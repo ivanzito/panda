@@ -1,0 +1,13 @@
+dependencies {
+    implementation project(':java11')
+    implementation project(':client')
+    implementation project(':jackson')
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.4'
+    implementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+}

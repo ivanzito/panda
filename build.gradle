@@ -1,0 +1,25 @@
+allprojects {
+    apply plugin: 'java'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        implementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+        implementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+        implementation 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+        testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '4.7.0'
+
+        implementation 'ch.qos.logback:logback-classic:1.4.4'
+    }
+}
+
+group 'br.com.panda'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}

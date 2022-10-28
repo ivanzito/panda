@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':client')
+    implementation project(':retry')
+    implementation project(':jackson')
+}
