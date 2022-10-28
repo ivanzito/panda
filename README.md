@@ -15,11 +15,11 @@ Panda it`s in wokring in progress. So, the list below shows the roadmap
 
 ### How to use
 ```
-private final RequestBuilder.newRequest()
-        .method(HttpMethod.GET)
-        .headers(Map.of("Accept", List.of("*/*")))
-        .build();
-Response response = request.doRequest("http://www.google.com");
+    private final Request request = new DefaultRequest(HttpMethod.GET, Map.of("Accept", List.of("*/*")));
+    private final Client client = ClientBuilder.of()
+            .request(request)
+            .build();
+Response response = client.request("http://www.google.com");
 ```
 ### 
 

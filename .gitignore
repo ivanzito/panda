@@ -1,6 +1,8 @@
 # From https://github.com/github/gitignore/blob/master/Gradle.gitignore
 .gradle
 /build/
+build/*
+!build/build.xml
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -98,9 +100,19 @@ Icon
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
 
+.idea
+*/tmp
+
 # Directories potentially created on remote AFP share
 .AppleDB
 .AppleDesktop
 Network Trash Folder
 Temporary Items
 .apdisk
+
+java11/build
+circuit-breaker/build
+client/build
+jackson/build
+panda-sample/build
+retry/build
