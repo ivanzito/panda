@@ -5,11 +5,8 @@ import java.util.Map;
 
 public interface Request {
 
-    HttpMethod method();
-
-    Map<String, List<String>> headers();
-
-    String body();
-
     Response call(String uri);
+    Response call(String uri, HttpMethod httpMethod);
+    Response call(String uri, HttpMethod httpMethod, Map<String, List<String>> headers);
+    Response call(String uri, HttpMethod httpMethod, String body, Map<String, List<String>> headers);
 }

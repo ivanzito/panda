@@ -6,30 +6,33 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.lang.reflect.Type;
-
 public class JacksonCodec implements Decoder, Encoder {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public Object decode(final String value, final Type type) throws JsonProcessingException {
-        return mapper.readValue(value, (JavaType) type);
+    public <T> T decode(final String value, final Class<T> clazz) {
+        try {
+            return mapper.readValue(value, clazz);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
     @Override
-    public void prettyPrinter(final Object value) {
+    public String prettyPrinter(final Object value) {
         try {
-            mapper.writerWithDefaultPrettyPrinter().writeValueAsString(value);
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(value);
         } catch (JsonProcessingException e) {
             //TODO Implementar as exceptions
         }
+        return "";
     }
 
     @Override
-    public Object encode(final Object value, final Type clazz) {
-        return mapper.convertValue(value, (JavaType) clazz);
+    public <T> T encode(String body, Class<T> clazz) {
+        return mapper.convertValue(body, (JavaType) clazz.getGenericSuperclass());
     }
-
 }

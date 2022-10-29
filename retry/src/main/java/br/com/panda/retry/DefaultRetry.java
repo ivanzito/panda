@@ -26,8 +26,8 @@ public class DefaultRetry implements Retryable {
     }
 
     @Override
-    public Response retry(Request request, String uri) {
-        return this.retry(request, uri, 1);
+    public Response retry(Request request, String uri, String body) {
+        return this.retry(request, uri, body, 1);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class DefaultRetry implements Retryable {
     }
 
 
-    private Response retry(final Request request, String uri, int retryNumber) {
+    private Response retry(final Request request, String uri, String body, int retryNumber) {
 
         if (retryNumber > this.retries) {
             throw new RetryExhausted(this.retries);
@@ -44,10 +44,10 @@ public class DefaultRetry implements Retryable {
 
         Response response = null;
         try {
-            response = request.call(uri);
+            //response = request.call(uri, body);
             if (!isStatusCode2xx(response.statusCode())) {
                 LOGGER.warn("Occurred something wrong during the request, trying by {} time", retryNumber);
-                return this.retry(request, uri, ++retryNumber);
+                return this.retry(request, uri, body, ++retryNumber);
             }
         } catch (Exception ex) {
             if (!this.retryableExceptions().contains(ex.getClass())) {
@@ -55,7 +55,7 @@ public class DefaultRetry implements Retryable {
             }
             if (response == null || !isStatusCode2xx(response.statusCode()) && retryNumber <= retries) {
                 LOGGER.warn("Could not possible execute the request. Trying by {} time", retryNumber);
-                return this.retry(request, uri, ++retryNumber);
+                return this.retry(request, uri, body, ++retryNumber);
             }
         }
         return response;

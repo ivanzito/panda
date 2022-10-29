@@ -1,7 +1,7 @@
 package br.com.panda.sample.marvel;
 
 import br.com.panda.client.*;
-import br.com.panda.client.java11.DefaultRequest;
+import br.com.panda.client.java11.PandaRequest;
 import br.com.panda.sample.marvel.config.Key;
 import br.com.panda.sample.marvel.config.MarvelConfig;
 import br.com.panda.sample.marvel.dto.Characters;
@@ -28,22 +28,19 @@ import static java.util.Objects.isNull;
 
 public class MarvelConnector {
     private Characters characters;
-    private final Request request = new DefaultRequest(HttpMethod.GET, Map.of("Accept", List.of("*/*")));
-    private final Client client = ClientBuilder.of()
-            .request(request)
-            .build();
+
+    private final PandaClient pandaClient = new PandaClient();
+    private final Request request = new PandaRequest();
+
+    //client.request(request)
 
     private final String URI = "https://gateway.marvel.com:443/v1/public/characters";
-
-    public void sample() {
-        new MarvelConnector().getStories();
-    }
 
     @SneakyThrows
     public Characters getCharacters() {
         if (isNull(characters)) {
-            Response response = client.request(URI + this.hash());
-            this.characters = new ObjectMapper().readValue(response.body(), Characters.class);
+            Response response = request.call(URI + this.hash());
+            this.characters = response.decode(Characters.class);
         }
         return this.characters;
     }
@@ -51,8 +48,8 @@ public class MarvelConnector {
     @SneakyThrows
     public List<Events> getEvents() {
         if (isNull(characters)) {
-            Response response = client.request(URI + this.hash());
-            this.characters = new ObjectMapper().readValue(response.body(), Characters.class);
+            Response response = request.call(URI + this.hash());
+            this.characters = response.decode(Characters.class);
         }
         return this.characters.getSummary()
                 .getResults()
@@ -64,9 +61,8 @@ public class MarvelConnector {
     @SneakyThrows
     public List<Stories> getStories() {
         if (isNull(characters)) {
-            Response response = client.request(URI + this.hash());
-            System.out.println(response.body());
-            this.characters = new ObjectMapper().readValue(response.body(), Characters.class);
+            Response response = request.call(URI + this.hash());
+            this.characters = response.decode(Characters.class);
         }
         return this.characters.getSummary()
             .getResults()
@@ -78,8 +74,8 @@ public class MarvelConnector {
     @SneakyThrows
     public List<Series> getSeries() {
         if (isNull(characters)) {
-            Response response = client.request(URI + this.hash());
-            this.characters = new ObjectMapper().readValue(response.body(), Characters.class);
+            Response response = request.call(URI + this.hash());
+            this.characters = response.decode(Characters.class);
         }
         return this.characters
             .getSummary()
@@ -92,8 +88,8 @@ public class MarvelConnector {
     @SneakyThrows
     public List<Comics> getComics() {
         if (isNull(characters)) {
-            Response response = client.request(URI + this.hash());
-            this.characters = new ObjectMapper().readValue(response.body(), Characters.class);
+            Response response = request.call(URI + this.hash());
+            this.characters = response.decode(Characters.class);
         }
         return this.characters.getSummary()
                 .getResults()
