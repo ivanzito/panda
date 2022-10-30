@@ -14,12 +14,13 @@ it've been using Jackson
 ### How to do requests
 A simple GET
 ```
-    private Response response = new PandaRequest().call("http://www.google.com");
+    private final PandaClient client = new PandaClient(new PandaRequest());
+    private final Response = client.request("http://www.google.com");
 ```
 A simple GET using timeout
 ```
-    private Response response = new PandaRequest(Duration.ofSeconds(10))
-        .call("http://www.google.com");
+    private final PandaClient client = new PandaClient(new PandaRequest(Duration.ofSeconds(10)));
+    private final Response = client.request("http://www.google.com");
 ```
 ### 
 

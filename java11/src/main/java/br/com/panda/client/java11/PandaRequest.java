@@ -74,7 +74,6 @@ public class PandaRequest implements Request {
         }
     }
 
-
     private Response extractResponse(HttpRequest request) throws IOException, InterruptedException {
         HttpResponse<byte[]> send = httpClient.send(request, HttpResponse.BodyHandlers.ofByteArray());
         return new PandaResponse(new String(send.body()), send.statusCode(), send.headers().map());

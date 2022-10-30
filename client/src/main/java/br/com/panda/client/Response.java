@@ -1,6 +1,5 @@
 package br.com.panda.client;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -10,9 +9,9 @@ public interface Response {
 
     <T> T decode(Class<T> clazz);
 
-    int statusCode();
-
     Decoder decoder();
+
+    int statusCode();
 
     Map<String, List<String>> headers();
 }

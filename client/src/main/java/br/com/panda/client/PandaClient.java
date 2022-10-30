@@ -1,13 +1,19 @@
 package br.com.panda.client;
 
+import java.util.List;
+import java.util.Map;
+
 public class PandaClient {
 
     private Retryable retryable;
     private Encoder encoder;
     private Decoder decoder;
+    private final Request request;
 
 
-    public PandaClient() {}
+    public PandaClient(Request request) {
+        this.request = request;
+    }
 
     public PandaClient and() {
         return this;
@@ -38,5 +44,18 @@ public class PandaClient {
 
     public Decoder getDecoder() {
         return decoder;
+    }
+
+    public Response request(String uri) {
+        return request.call(uri);
+    }
+    public Response request(String uri, HttpMethod httpMethod) {
+        return request.call(uri, httpMethod);
+    }
+    public Response request(String uri, HttpMethod httpMethod, Map<String, List<String>> headers) {
+        return request.call(uri, httpMethod, headers);
+    }
+    public Response request(String uri, HttpMethod httpMethod, String body, Map<String, List<String>> headers){
+        return request.call(uri, httpMethod, body, headers);
     }
 }

@@ -29,17 +29,14 @@ import static java.util.Objects.isNull;
 public class MarvelConnector {
     private Characters characters;
 
-    private final PandaClient pandaClient = new PandaClient();
-    private final Request request = new PandaRequest();
-
-    //client.request(request)
+    private final PandaClient pandaClient = new PandaClient(new PandaRequest());
 
     private final String URI = "https://gateway.marvel.com:443/v1/public/characters";
 
     @SneakyThrows
     public Characters getCharacters() {
         if (isNull(characters)) {
-            Response response = request.call(URI + this.hash());
+            Response response = pandaClient.request(URI + this.hash());
             this.characters = response.decode(Characters.class);
         }
         return this.characters;
@@ -48,7 +45,7 @@ public class MarvelConnector {
     @SneakyThrows
     public List<Events> getEvents() {
         if (isNull(characters)) {
-            Response response = request.call(URI + this.hash());
+            Response response = pandaClient.request(URI + this.hash());
             this.characters = response.decode(Characters.class);
         }
         return this.characters.getSummary()
@@ -61,7 +58,7 @@ public class MarvelConnector {
     @SneakyThrows
     public List<Stories> getStories() {
         if (isNull(characters)) {
-            Response response = request.call(URI + this.hash());
+            Response response = pandaClient.request(URI + this.hash());
             this.characters = response.decode(Characters.class);
         }
         return this.characters.getSummary()
@@ -74,7 +71,7 @@ public class MarvelConnector {
     @SneakyThrows
     public List<Series> getSeries() {
         if (isNull(characters)) {
-            Response response = request.call(URI + this.hash());
+            Response response = pandaClient.request(URI + this.hash());
             this.characters = response.decode(Characters.class);
         }
         return this.characters
@@ -88,7 +85,7 @@ public class MarvelConnector {
     @SneakyThrows
     public List<Comics> getComics() {
         if (isNull(characters)) {
-            Response response = request.call(URI + this.hash());
+            Response response = pandaClient.request(URI + this.hash());
             this.characters = response.decode(Characters.class);
         }
         return this.characters.getSummary()

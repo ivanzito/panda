@@ -51,4 +51,11 @@ public class PandaResponse implements Response {
         return this.headers;
     }
 
+    @Override
+    public String toString() {
+        return String.format("statusCode: %s \n headers: %s \n body:%s",
+                decoder().prettyPrinter(statusCode),
+                decoder().prettyPrinter(headers),
+                body);
+    }
 }
