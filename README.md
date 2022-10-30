@@ -1,3 +1,5 @@
+![Panda Framework](doc/panda.jpg "Panda framework")
+
 # Panda is a library to work through HTTP/2.0
 
 It uses Java 11 in package _java.net.http_ 
