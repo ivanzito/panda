@@ -1,20 +1,26 @@
 # Panda is a library to work through HTTP/2.0
 
-### Some features that will have
+It uses Java 11 in package _java.net.http_ 
 
-Panda it`s in working in progress. So, the list below shows the roadmap in sequence
-- retry
-- codecs
-- backoff
+### Features
+- Use of codecs to serialize/deserialize requests and responses, by default
+it've been using Jackson
+
+### Roadmap
+ - backoff
+- timeout
 - circuit-breaker
 
 ### How to do requests
+A simple GET
 ```
-    private final Request request = new DefaultRequest(HttpMethod.GET, Map.of("Accept", List.of("*/*")));
-    private final Client client = ClientBuilder.of()
-            .request(request)
-            .build();
-    private final Response response = client.request("http://www.google.com");
+    private final PandaClient client = new PandaClient(new PandaRequest());
+    private final Response = client.request("http://www.google.com");
+```
+A simple GET using timeout
+```
+    private final PandaClient client = new PandaClient(new PandaRequest(Duration.ofSeconds(10)));
+    private final Response = client.request("http://www.google.com");
 ```
 ### 
 

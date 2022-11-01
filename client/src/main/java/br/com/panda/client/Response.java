@@ -1,7 +1,5 @@
 package br.com.panda.client;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -9,11 +7,11 @@ public interface Response {
 
     String body();
 
-    String body(Type type) throws IOException;
-
-    int statusCode();
+    <T> T decode(Class<T> clazz);
 
     Decoder decoder();
+
+    int statusCode();
 
     Map<String, List<String>> headers();
 }

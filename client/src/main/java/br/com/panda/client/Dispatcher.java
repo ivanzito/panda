@@ -1,6 +1,5 @@
 package br.com.panda.client;
 
-public abstract class Dispatcher {
-
-    public abstract Response request(String uri);
+public interface Dispatcher {
+    Response request(Request request);
 }

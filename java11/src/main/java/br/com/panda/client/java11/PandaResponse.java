@@ -2,23 +2,21 @@ package br.com.panda.client.java11;
 
 
 import br.com.panda.client.Decoder;
-import br.com.panda.client.Encoder;
 import br.com.panda.client.Response;
 import br.com.panda.decoder.JacksonCodec;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
 
-public class DefaultResponse implements Response {
+public class PandaResponse implements Response {
 
     private final int statusCode;
     private final String body;
     private final Map<String, List<String>> headers;
+    private boolean verbose = true;
 
-    public DefaultResponse(String body, int statusCode, Map<String, List<String>> headers) {
+    public PandaResponse(String body, int statusCode, Map<String, List<String>> headers) {
         this.statusCode = statusCode;
         this.body = body;
         this.headers = headers;
@@ -29,14 +27,13 @@ public class DefaultResponse implements Response {
         return this.body;
     }
 
-
     @Override
-    public String body(final Type type) {
-        try {
-            return (String) this.decoder().decode(body, type);
-        } catch (IOException ex) {
-            throw new RuntimeException("Occurred an error while decoding response", ex);
+    public <T> T decode(Class<T> clazz) {
+        T decode = this.decoder().decode(this.body, clazz);
+        if (verbose) {
+            System.out.println(this.decoder().prettyPrinter(decode));
         }
+        return decode;
     }
 
     @Override
@@ -54,4 +51,11 @@ public class DefaultResponse implements Response {
         return this.headers;
     }
 
+    @Override
+    public String toString() {
+        return String.format("statusCode: %s \n headers: %s \n body:%s",
+                decoder().prettyPrinter(statusCode),
+                decoder().prettyPrinter(headers),
+                body);
+    }
 }

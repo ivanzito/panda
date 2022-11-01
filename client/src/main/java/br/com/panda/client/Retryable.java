@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface Retryable {
 
-    Response retry(Request request, String uri) throws IOException, InterruptedException;
+    Response retry(Request request, String uri, String body) throws IOException, InterruptedException;
 
     List<Class<? extends Throwable>> retryableExceptions();
 
