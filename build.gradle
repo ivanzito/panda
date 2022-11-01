@@ -1,5 +1,6 @@
 allprojects {
     apply plugin: 'java'
+    apply plugin: 'pmd'
     repositories {
         mavenCentral()
     }
@@ -15,6 +16,12 @@ allprojects {
 
 group 'br.com.panda'
 version '1.0-SNAPSHOT'
+
+pmd {
+    consoleOutput = true
+    toolVersion = "6.21.0"
+    rulesMinimumPriority = 5
+}
 
 repositories {
     mavenCentral()
