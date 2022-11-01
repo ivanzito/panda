@@ -18,6 +18,7 @@ group 'br.com.panda'
 version '1.0-SNAPSHOT'
 
 pmd {
+    ruleSetFiles = files("rulesets/pmd.xml")
     consoleOutput = true
     toolVersion = "6.21.0"
     rulesMinimumPriority = 5
