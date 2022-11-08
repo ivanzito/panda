@@ -44,7 +44,7 @@ public class DefaultRetry implements Retryable {
 
         Response response = null;
         try {
-            //response = request.call(uri, body);
+            response = request.call(uri);
             if (!isStatusCode2xx(response.statusCode())) {
                 LOGGER.warn("Occurred something wrong during the request, trying by {} time", retryNumber);
                 return this.retry(request, uri, body, ++retryNumber);

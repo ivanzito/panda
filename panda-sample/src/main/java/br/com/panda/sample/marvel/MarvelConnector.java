@@ -1,40 +1,42 @@
 package br.com.panda.sample.marvel;
 
-import br.com.panda.client.*;
+import br.com.panda.client.PandaClient;
+import br.com.panda.client.Response;
 import br.com.panda.client.java11.PandaRequest;
 import br.com.panda.sample.marvel.config.Key;
 import br.com.panda.sample.marvel.config.MarvelConfig;
-import br.com.panda.sample.marvel.dto.Characters;
-import br.com.panda.sample.marvel.dto.Comics;
-import br.com.panda.sample.marvel.dto.Events;
-import br.com.panda.sample.marvel.dto.Results;
-import br.com.panda.sample.marvel.dto.Series;
-import br.com.panda.sample.marvel.dto.Stories;
+import br.com.panda.sample.marvel.dto.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import lombok.SneakyThrows;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
 public class MarvelConnector {
+
     private Characters characters;
-
     private final PandaClient pandaClient = new PandaClient(new PandaRequest());
-
     private final String URI = "https://gateway.marvel.com:443/v1/public/characters";
 
-    @SneakyThrows
-    public Characters getCharacters() {
+    public PandaClient getPandaClient() {
+        return pandaClient;
+    }
+
+    public String getURI() {
+        return URI;
+    }
+
+    public Characters getCharacters() throws NoSuchAlgorithmException, IOException {
         if (isNull(characters)) {
             Response response = pandaClient.request(URI + this.hash());
             this.characters = response.decode(Characters.class);
@@ -42,8 +44,7 @@ public class MarvelConnector {
         return this.characters;
     }
 
-    @SneakyThrows
-    public List<Events> getEvents() {
+    public List<Events> getEvents() throws NoSuchAlgorithmException, IOException {
         if (isNull(characters)) {
             Response response = pandaClient.request(URI + this.hash());
             this.characters = response.decode(Characters.class);
@@ -55,8 +56,7 @@ public class MarvelConnector {
                 .collect(Collectors.toList());
     }
 
-    @SneakyThrows
-    public List<Stories> getStories() {
+    public List<Stories> getStories() throws NoSuchAlgorithmException, IOException {
         if (isNull(characters)) {
             Response response = pandaClient.request(URI + this.hash());
             this.characters = response.decode(Characters.class);
@@ -68,8 +68,7 @@ public class MarvelConnector {
             .collect(Collectors.toList());
     }
 
-    @SneakyThrows
-    public List<Series> getSeries() {
+    public List<Series> getSeries() throws NoSuchAlgorithmException, IOException {
         if (isNull(characters)) {
             Response response = pandaClient.request(URI + this.hash());
             this.characters = response.decode(Characters.class);
@@ -82,8 +81,7 @@ public class MarvelConnector {
             .collect(Collectors.toList());
     }
 
-    @SneakyThrows
-    public List<Comics> getComics() {
+    public List<Comics> getComics() throws NoSuchAlgorithmException, IOException {
         if (isNull(characters)) {
             Response response = pandaClient.request(URI + this.hash());
             this.characters = response.decode(Characters.class);
@@ -96,8 +94,7 @@ public class MarvelConnector {
     }
 
 
-    @SneakyThrows
-    private String hash()  {
+    private String hash() throws NoSuchAlgorithmException, IOException {
 
         final ObjectMapper mapper = new ObjectMapper(new YAMLFactory()); // jackson databind
         MarvelConfig config =  mapper.readValue(new File("./src/main/resources/marvel.yaml"), MarvelConfig.class);

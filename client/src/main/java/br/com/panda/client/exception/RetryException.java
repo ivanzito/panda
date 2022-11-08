@@ -1,6 +1,11 @@
 package br.com.panda.client.exception;
 
-public class RetryException extends RuntimeException {
+import java.io.Serializable;
+
+public class RetryException extends RuntimeException implements Serializable {
+
+
+    private static final long serialVersionUID = 5254353245243534L;
 
     private final String message;
     private final int retryNumber;

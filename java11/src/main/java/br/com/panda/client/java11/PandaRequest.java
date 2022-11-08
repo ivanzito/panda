@@ -1,6 +1,8 @@
 package br.com.panda.client.java11;
 
-import br.com.panda.client.*;
+import br.com.panda.client.HttpMethod;
+import br.com.panda.client.Request;
+import br.com.panda.client.Response;
 
 import java.io.IOException;
 import java.net.URI;
@@ -9,7 +11,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 
 public class PandaRequest implements Request {
@@ -39,7 +40,7 @@ public class PandaRequest implements Request {
     @Override
     public Response call(String uri, HttpMethod httpMethod) {
         try {
-            HttpRequest request = chooseMethod(httpMethod, null)
+            HttpRequest request = chooseMethod(httpMethod, "")
                     .uri(new URI(uri))
                     .build();
             return extractResponse(request);
@@ -49,9 +50,9 @@ public class PandaRequest implements Request {
     }
 
     @Override
-    public Response call(String uri, HttpMethod httpMethod, Map<String, List<String>> headers) {
+    public Response call(String uri, HttpMethod httpMethod, Map<String, String> headers) {
         try {
-            HttpRequest request = chooseMethod(httpMethod, null)
+            HttpRequest request = chooseMethod(httpMethod, "")
                     .uri(new URI(uri))
                     .build();
 
@@ -62,7 +63,7 @@ public class PandaRequest implements Request {
     }
 
     @Override
-    public Response call(String uri, HttpMethod httpMethod, String body, Map<String, List<String>> headers) {
+    public Response call(String uri, HttpMethod httpMethod, String body, Map<String, String> headers) {
         HttpRequest.Builder builder = chooseMethod(httpMethod, body);
         try {
             HttpRequest request = extractHeaders(builder, headers)
@@ -81,20 +82,15 @@ public class PandaRequest implements Request {
 
     private HttpRequest.Builder chooseMethod(HttpMethod httpMethod, String body) {
         return switch (httpMethod) {
-            case PUT -> HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.ofString(body));
-            case POST -> HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.ofString(body));
+            case PUT -> HttpRequest.newBuilder().PUT(HttpRequest.BodyPublishers.ofString(body == null ? "" : body));
+            case POST -> HttpRequest.newBuilder().POST(HttpRequest.BodyPublishers.ofString(body == null ? "" : body));
             case DELETE -> HttpRequest.newBuilder().DELETE();
             default -> HttpRequest.newBuilder().GET();
         };
     }
 
-    private HttpRequest.Builder extractHeaders(HttpRequest.Builder requestBuilder, Map<String, List<String>> headers) {
-
-        for (Map.Entry<String, List<String>> params : headers.entrySet()) {
-            for (String value : params.getValue()) {
-                requestBuilder.headers(params.getKey(), value);
-            }
-        }
+    private HttpRequest.Builder extractHeaders(HttpRequest.Builder requestBuilder, Map<String, String> headers) {
+        headers.forEach(requestBuilder::header);
         return requestBuilder;
     }
 }

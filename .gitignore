@@ -6,7 +6,11 @@ build/*
 
 # Ignore Gradle GUI config
 gradle-app.setting
-
+panda-sample/out
+java11/out
+gradle/daemon/7.4/daemon-25534.out.log
+gradle/
+gradle/wrapper
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 

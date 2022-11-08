@@ -6,4 +6,3 @@ include 'circuit-breaker'
 include 'java11'
 include 'panda-sample'
 include 'jackson'
-

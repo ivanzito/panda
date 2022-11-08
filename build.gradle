@@ -5,14 +5,15 @@ allprojects {
         mavenCentral()
     }
     dependencies {
-        implementation 'org.junit.jupiter:junit-jupiter:5.9.0'
-        implementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-        implementation 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
         testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '4.7.0'
-
-        implementation 'ch.qos.logback:logback-classic:1.4.4'
+        testImplementation "com.github.tomakehurst:wiremock-jre8:2.35.0"
+        implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     }
 }
+
+sourceCompatibility = 17
+targetCompatibility = 17
 
 group 'br.com.panda'
 version '1.0-SNAPSHOT'
