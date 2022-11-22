@@ -6,12 +6,6 @@ It uses Java 11 in package _java.net.http_
 - Use of codecs to serialize/deserialize requests and responses, by default
 it've been using Jackson
 
-### Roadmap
-- retry
-- backoff
-- cache
-- circuit-breaker
-
 ### How to do requests
 A simple GET
 ```
@@ -40,6 +34,8 @@ A POST sample
     );
 ```
 
----
-## Mantainer
-Ivan Rodrigues
+### Roadmap
+- retry
+- backoff
+- cache
+- circuit-breaker
