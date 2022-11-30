@@ -5,6 +5,6 @@
   },
   "response": {
     "status": 408,
-    "fixedDelayMilliseconds": 2000
+    "fixedDelayMilliseconds": 10000
   }
 }

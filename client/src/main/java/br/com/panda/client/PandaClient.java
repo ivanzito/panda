@@ -2,6 +2,8 @@ package br.com.panda.client;
 
 import java.util.Map;
 
+import static java.util.Objects.nonNull;
+
 public class PandaClient {
 
     private Retryable retryable;
@@ -50,8 +52,18 @@ public class PandaClient {
     }
 
     public Response request(String uri) {
-        return request.call(uri);
+        PandaClientProxy pandaClientProxy = new PandaClientProxy(this.request, retryable, encoder, decoder);
+        if (nonNull(this.retryable)) {
+            try {
+                return request.call(uri);
+            } catch (Exception e) {
+                return pandaClientProxy.request(uri, 1);
+            }
+        } else {
+            return request.call(uri);
+        }
     }
+
     public Response request(String uri, HttpMethod httpMethod) {
         return request.call(uri, httpMethod);
     }
@@ -61,4 +73,5 @@ public class PandaClient {
     public Response request(String uri, HttpMethod httpMethod, String body, Map<String, String> headers){
         return request.call(uri, httpMethod, body, headers);
     }
+
 }

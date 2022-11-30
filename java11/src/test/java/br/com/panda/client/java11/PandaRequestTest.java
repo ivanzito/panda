@@ -3,6 +3,8 @@ package br.com.panda.client.java11;
 
 import br.com.panda.client.PandaClient;
 import br.com.panda.client.Response;
+import br.com.panda.client.Retryable;
+import br.com.panda.retry.DefaultRetry;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.*;
@@ -35,30 +37,42 @@ public class PandaRequestTest {
     @Test
     void given_a_get_request_when_do_a_request_then_is_expected_status_a_200() {
 
-        stubFor(get(URL)
+        stubFor(get("http://localhost:8080/animals/rand/10")
                 .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json", "charset=utf-8")));
 
 
-        Response response = client.request(URL);
+        Response response = client.request("http://localhost:8080/animals/rand/10");
         assertThat(response.statusCode(), is(200));
     }
 
     @Test
     void given_a_request_when_the_duration_excedes_the_timeout_then_throw_an_exception() {
-        String URL = "http://localhost:8080/delayed";
 
-        final PandaClient client = new PandaClient(new PandaRequest(Duration.ofSeconds(1)));
+        final PandaClient client = new PandaClient(new PandaRequest(Duration.ofSeconds(8)));
 
-        stubFor(get(URL)
+        stubFor(get("http://localhost:8080/delayed")
                 .willReturn(aResponse()
                         .withStatus(408)
-                        .withFixedDelay(4000)
+                        .withFixedDelay(10000)
                         .withHeader("Content-Type", "application/json", "charset=utf-8")));
 
 
-        Response response = client.request(URL);
+        Response response = client.request("http://localhost:8080/delayed");
         assertThat(response.statusCode(), is(408));
+    }
+
+    @Test
+    void testRetry() {
+
+        final PandaClient client = new PandaClient(
+                new PandaRequest())
+                .and()
+                .retryable(new DefaultRetry(5));
+
+
+        Response response = client.request("http://www.googles.com");
+
     }
 }
