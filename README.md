@@ -33,9 +33,3 @@ A POST sample
         )
     );
 ```
-
-### Roadmap
-- retry
-- backoff
-- cache
-- circuit-breaker
