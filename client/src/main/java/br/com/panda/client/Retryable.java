@@ -9,4 +9,8 @@ public interface Retryable {
 
     List<Class<? extends Throwable>> retryableExceptions();
 
+    void onRequestError(Exception exception);
+
+    boolean shouldRetry();
+
 }

@@ -1,29 +1,26 @@
 package br.com.panda.client;
 
 
+import java.io.Serial;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.Objects.isNull;
 
 class PandaClientProxy extends PandaClient {
 
-    private final Retryable retryable;
-    private final Encoder encoder;
-    private final Decoder decoder;
+    @Serial
+    private static final long serialVersionUID = UUID.randomUUID().version();
 
     public PandaClientProxy(Request request, Retryable retryable, Encoder encoder, Decoder decoder) {
-        super(request);
-        this.retryable = retryable;
-        this.encoder = encoder;
-        this.decoder = decoder;
-
+        super(request, retryable, encoder, decoder);
     }
 
     public Response request(String uri, int retry) {
         AtomicInteger atomicInteger = new AtomicInteger(retry);
 
-        if (atomicInteger.incrementAndGet() <= this.retryable.retries()) {
+        if (atomicInteger.incrementAndGet() <= super.getRetry().retries()) {
             try {
                 return super.request(uri);
             } catch (Exception e) {
@@ -37,10 +34,10 @@ class PandaClientProxy extends PandaClient {
     }
 
     private Class<? extends Throwable> getaClass() {
-        return super.getRetryable().retryableExceptions()
+        return super.getRetry().retryableExceptions()
                 .stream()
                 .filter(Objects::nonNull)
-                .filter(ex -> this.getRetryable().retryableExceptions().contains(ex))
+                .filter(ex -> this.getRetry().retryableExceptions().contains(ex))
                 .findFirst()
                 .orElse(null);
     }

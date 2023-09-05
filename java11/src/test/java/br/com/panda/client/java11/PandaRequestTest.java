@@ -2,8 +2,9 @@ package br.com.panda.client.java11;
 
 
 import br.com.panda.client.PandaClient;
+import br.com.panda.client.PandaClientBuilder;
 import br.com.panda.client.Response;
-import br.com.panda.client.Retryable;
+import br.com.panda.client.exception.RetryExhausted;
 import br.com.panda.retry.DefaultRetry;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
@@ -16,11 +17,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-
 @WireMockTest
 public class PandaRequestTest {
 
-    private final PandaClient client = new PandaClient(new PandaRequest());
     private final static WireMockServer wireMockServer = new WireMockServer();
 
     @BeforeAll
@@ -43,6 +42,7 @@ public class PandaRequestTest {
                 .withHeader("Content-Type", "application/json", "charset=utf-8")));
 
 
+        PandaClient client = PandaClientBuilder.of(new PandaRequest(Duration.ofSeconds(2))).build();
         Response response = client.request("http://localhost:8080/animals/rand/10");
         assertThat(response.statusCode(), is(200));
     }
@@ -50,7 +50,7 @@ public class PandaRequestTest {
     @Test
     void given_a_request_when_the_duration_excedes_the_timeout_then_throw_an_exception() {
 
-        final PandaClient client = new PandaClient(new PandaRequest(Duration.ofSeconds(8)));
+        final PandaClient client = PandaClientBuilder.of(new PandaRequest(Duration.ofSeconds(8))).build();
 
         stubFor(get("http://localhost:8080/delayed")
                 .willReturn(aResponse()
@@ -65,14 +65,10 @@ public class PandaRequestTest {
 
     @Test
     void testRetry() {
-
-        final PandaClient client = new PandaClient(
-                new PandaRequest())
+        PandaClient client = PandaClientBuilder
+                .of(new PandaRequest())
                 .and()
-                .retryable(new DefaultRetry(5));
-
-
-        Response response = client.request("http://www.googles.com");
-
+                .retry(DefaultRetry.DEFAULT_RETRY).build();
+        Assertions.assertThrows(RetryExhausted.class, () -> client.request("http://www.googles.com"));
     }
 }

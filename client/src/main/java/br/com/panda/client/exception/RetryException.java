@@ -10,7 +10,7 @@ public class RetryException extends RuntimeException implements Serializable {
     private final String message;
     private final int retryNumber;
     private final Exception cause;
-    private int statusCode;
+    private transient int statusCode;
 
     public RetryException(int retryNumber, int statusCode, Exception cause) {
         this.message = "Occurred the following exception during http request: " + cause.getClass().getName();
