@@ -68,7 +68,7 @@ public class PandaRequestTest {
         PandaClient client = PandaClientBuilder
                 .of(new PandaRequest())
                 .and()
-                .retry(DefaultRetry.DEFAULT_RETRY).build();
+                .retry(DefaultRetry.RETRY).build();
         Assertions.assertThrows(RetryExhausted.class, () -> client.request("http://www.googles.com"));
     }
 }

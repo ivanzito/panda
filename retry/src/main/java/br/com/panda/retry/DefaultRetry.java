@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DefaultRetry implements Retryable {
 
-    public static final DefaultRetry DEFAULT_RETRY = new DefaultRetry(3);
+    public static final DefaultRetry RETRY = new DefaultRetry(3);
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRetry.class);
 
