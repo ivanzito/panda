@@ -1,6 +1,7 @@
 package br.com.panda.sample.marvel;
 
 import br.com.panda.client.PandaClient;
+import br.com.panda.client.PandaClientBuilder;
 import br.com.panda.client.Response;
 import br.com.panda.client.java11.PandaRequest;
 import br.com.panda.sample.marvel.config.Key;
@@ -25,7 +26,7 @@ import static java.util.Objects.isNull;
 public class MarvelConnector {
 
     private Characters characters;
-    private final PandaClient pandaClient = new PandaClient(new PandaRequest());
+    private final PandaClient pandaClient = PandaClientBuilder.of(new PandaRequest()).build();
     private final String URI = "https://gateway.marvel.com:443/v1/public/characters";
 
     public PandaClient getPandaClient() {
