@@ -10,6 +10,7 @@ If you wanna change some behavior basically you should implement an interface.
 - Use of codecs to serialize/deserialize requests and responses, by default it've been using Jackson library
 - Retry police(if you can exists one with 3 retries)
 
+
 ### How to do requests
 
 To build a __PandaClient__, you can use a builder like:
